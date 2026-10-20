@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全天候暗网监测、数字资产泄露预警与虚拟身份防御技术白皮书 - 灵猫网络文档中心</title>
+  <meta name="description" content="深入解构现代网络空间黑产供应链、自动化 InfoStealer 恶意软件与暗网撞库交易生态。全面解密灵猫网络泄露预警的分布式 Tor 爬虫网络、基于 NIST SP 800-63B 的 k-Anonymity（k-匿名）零知识盲匹配检索算法，以及灵猫网络虚拟身份动态沙箱别名邮件转发阻断机制，构建从事前掩护、事中监测到事后响应的全链路防御闭环。">
+  <link rel="stylesheet" href="../css/style.css?v=20261019">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <style>
+    /* Docs Hub 专用专业级排版样式 */
+    .docs-body {
+      background: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .docs-header-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #eaecf0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .docs-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #0f172a;
+    }
+    .docs-brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+    .docs-brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+    .docs-brand-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid #bfdbfe;
+    }
+    .docs-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .docs-nav-link {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #475569;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .docs-nav-link:hover {
+      color: #0f172a;
+    }
+    .docs-btn-login {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .docs-btn-login:hover {
+      background: #1e293b;
+    }
+    .docs-main-layout {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      padding: 28px 24px 60px;
+      gap: 36px;
+      box-sizing: border-box;
+    }
+    /* 侧边栏导航 */
+    .docs-sidebar {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px 18px;
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+    .docs-sidebar-group {
+      margin-bottom: 24px;
+    }
+    .docs-sidebar-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #94a3b8;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+      padding-left: 10px;
+    }
+    .docs-menu-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .docs-menu-item a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: #475569;
+      text-decoration: none;
+      font-weight: 500;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+    }
+    .docs-menu-item a:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    .docs-menu-item.active a {
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 700;
+      border-left: 3px solid #2563eb;
+    }
+    /* 文章主体区 */
+    .docs-content-container {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 44px 50px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      min-height: 600px;
+    }
+    .article-header {
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 24px;
+      margin-bottom: 30px;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .article-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid #dbeafe;
+    }
+    .article-time, .article-date {
+      font-size: 0.82rem;
+      color: #64748b;
+    }
+    .article-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      margin: 0 0 16px;
+    }
+    .article-summary {
+      font-size: 1.05rem;
+      color: #475569;
+      line-height: 1.65;
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 0;
+    }
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #334155;
+    }
+    .article-body h3 {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 36px 0 14px;
+      letter-spacing: -0.01em;
+    }
+    .article-body p {
+      margin-bottom: 18px;
+    }
+    .article-body strong {
+      color: #0f172a;
+    }
+    .article-body ul, .article-body ol {
+      margin: 0 0 20px 24px;
+      padding: 0;
+    }
+    .article-body li {
+      margin-bottom: 8px;
+    }
+    .article-body code {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.88rem;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+    .docs-callout {
+      padding: 18px 20px;
+      border-radius: 10px;
+      margin: 24px 0;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+    .docs-callout-info {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+    .docs-table-wrap {
+      overflow-x: auto;
+      margin: 24px 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+    }
+    .docs-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    .docs-table th, .docs-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .docs-table th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .docs-table tr:last-child td {
+      border-bottom: none;
+    }
+    .badge-success {
+      color: #16a34a;
+      font-weight: 700;
+    }
+    .docs-btn {
+      display: inline-block;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 8px;
+    }
+    .docs-link {
+      color: #2563eb;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    /* 在线工具卡片专有样式 */
+    .docs-tool-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+    }
+    .tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .tool-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      margin-right: 8px;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+    .tool-header h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #0f172a;
+    }
+    .btn-tool-action {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-tool-action:hover {
+      background: #dbeafe;
+    }
+    .tool-results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .tool-field {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 14px;
+      border-radius: 8px;
+    }
+    .field-label {
+      display: block;
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .field-val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f172a;
+      font-family: Consolas, Monaco, monospace;
+    }
+    .field-val.highlight {
+      color: #2563eb;
+    }
+    .docs-ping-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .ping-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    }
+    .ping-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+    .ping-val {
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .ping-green {
+      background: #ecfdf5;
+      color: #059669;
+    }
+    .ping-card p {
+      font-size: 0.78rem;
+      color: #64748b;
+      margin: 0;
+    }
+    .docs-status-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .status-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .status-box h4 {
+      margin: 0 0 4px;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+    .status-box p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .status-indicator.online {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+    .tool-status-banner.safe {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 16px 20px;
+      border-radius: 10px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .status-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+    .tool-status-banner h5 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      color: #166534;
+    }
+    .tool-status-banner p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #15803d;
+    }
+
+    /* 测速报告专用高科技交互样式 */
+    .speedtest-interactive-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+    }
+    .speedtest-interactive-card .tool-header h4 {
+      color: #ffffff;
+    }
+    .speedtest-interactive-card .tool-field {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .speedtest-interactive-card .field-label {
+      color: #94a3b8;
+    }
+    .speedtest-interactive-card .field-val {
+      color: #38bdf8;
+    }
+    .speed-gauge-wrap {
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 8px;
+    }
+    .speed-num-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .speed-big-val {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #38bdf8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .speed-unit {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .speed-progress-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .speed-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8 0%, #10b981 100%);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+    .speed-sub-metrics {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      flex-wrap: wrap;
+    }
+    .speed-sub-metrics strong {
+      color: #f1f5f9;
+    }
+    /* 身份与安全白皮书交互沙箱样式 */
+    .sec-tab-switch {
+      display: flex;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .sec-tab-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sec-tab-btn.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+    .sec-preset-chip {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sec-preset-chip:hover {
+      background: #e2e8f0;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .badge-pill.danger {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    .badge-pill.safe {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .badge-pill.warning {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+    @media (max-width: 900px) {
+      .docs-header-bar {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .docs-brand-badge {
+        display: none;
+      }
+      .docs-brand-title {
+        font-size: 1.02rem;
+      }
+      .docs-nav-actions {
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .docs-nav-link {
+        font-size: 0.8rem;
+      }
+      .docs-btn-login {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+      }
+      .docs-main-layout {
+        grid-template-columns: 1fr;
+        padding: 16px 12px 40px;
+        gap: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      .docs-content-container {
+        padding: 24px 16px;
+        order: 1; /* 移动端文章优先展示在顶部 */
+      }
+      .docs-sidebar {
+        position: static;
+        max-height: none;
+        order: 2; /* 目录列表移至文章下方供扩展阅读 */
+      }
+      .article-title {
+        font-size: 1.45rem;
+      }
+      .article-summary {
+        font-size: 0.92rem;
+      }
+      .article-meta {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tool-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .sec-tab-switch {
+        width: 100%;
+      }
+      .sec-tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 6px 8px;
+        font-size: 0.78rem;
+      }
+    }
+    /* 上线检查修复：手机上宽表格可左右滑动，不再把文字挤成一字一行 */
+    @media (max-width: 768px) {
+      .article-body table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .article-body th,
+      .article-body td {
+        min-width: 110px;
+      }
+    }
+  </style>
+  <link rel="canonical" href="https://lingmaonetwork.com/docs/security-alert.html">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "全天候暗网监测、数字资产泄露预警与虚拟身份防御技术白皮书", "description": "深入解构现代网络空间黑产供应链、自动化 InfoStealer 恶意软件与暗网撞库交易生态。全面解密灵猫网络泄露预警的分布式 Tor 爬虫网络、基于 NIST SP 800-63B 的 k-Anonymity（k-匿名）零知识盲匹配检索算法，以及灵猫网络虚拟身份动态沙箱别名邮件转发阻断机制，构建从事前掩护、事中监测到事后响应的全链路防御闭环。", "url": "https://lingmaonetwork.com/docs/security-alert.html", "mainEntityOfPage": "https://lingmaonetwork.com/docs/security-alert.html", "inLanguage": "zh-CN", "articleSection": "核心安全与隐私防御", "datePublished": "2026-10-19", "dateModified": "2026-10-19", "author": {"@type": "Organization", "name": "灵猫 Civet Cat", "url": "https://lingmaonetwork.com/"}, "publisher": {"@id": "https://lingmaonetwork.com/#org", "@type": "Organization", "name": "灵猫 Civet Cat", "logo": {"@type": "ImageObject", "url": "https://lingmaonetwork.com/assets/images/logo.png"}}, "isPartOf": {"@id": "https://lingmaonetwork.com/#website"}}</script>
+</head>
+<body class="docs-body" data-doc="security-alert">
+
+  <!-- 顶部精简科技导航栏 -->
+  <header class="docs-header-bar">
+    <a href="../index.html" class="docs-brand page-transition-link">
+      <img src="../assets/images/logo.png" alt="Civet Cat Logo">
+      <span class="docs-brand-title">Civet Cat 灵猫文档中心</span>
+      <span class="docs-brand-badge">企业知识库</span>
+    </a>
+    <div class="docs-nav-actions">
+      <a href="../index.html" class="docs-nav-link page-transition-link">返回官网首页</a>
+      <a href="../pricing.html" class="docs-nav-link page-transition-link">定价套餐</a>
+      <a href="../index.html#faq" class="docs-nav-link page-transition-link">常见问题</a>
+      <a href="https://vip01.civetnet.com" target="_blank" rel="noopener noreferrer" class="docs-btn-login">控制台登录</a>
+    </div>
+  </header>
+
+  <!-- 主体工作区：左侧目录树 + 右侧文章渲染器 -->
+  <main class="docs-main-layout">
+    
+    <!-- 侧边栏菜单 -->
+    <aside class="docs-sidebar" aria-label="文档导航目录">
+      
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">专线深度技术</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="what-is-iplc"><a href="what-is-iplc.html">什么是全物理 IPLC？</a></li>
+          <li class="docs-menu-item" data-id="iplc-network"><a href="iplc-network.html">灵猫全球 IPLC 骨干网络</a></li>
+          <li class="docs-menu-item" data-id="protocols-crypto"><a href="protocols-crypto.html">核心协议与军工级加密</a></li>
+          <li class="docs-menu-item" data-id="global-nodes"><a href="global-nodes.html">全球 45+ 骨干 POP 节点</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">原生解锁与 AI</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="native-ip"><a href="native-ip.html">原生 IP 与广播 IP 区别</a></li>
+          <li class="docs-menu-item" data-id="ai-productivity"><a href="ai-productivity.html">AI 大模型 (ChatGPT/Claude)</a></li>
+          <li class="docs-menu-item" data-id="solution-streaming"><a href="solution-streaming.html">4K/8K 原生流媒体全区解锁</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">行业解决方案</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="solution-remote-work"><a href="solution-remote-work.html">跨国远程办公协同</a></li>
+          <li class="docs-menu-item" data-id="solution-ai-dev"><a href="solution-ai-dev.html">企业级 AI API 高并发</a></li>
+          <li class="docs-menu-item" data-id="solution-ecommerce"><a href="solution-ecommerce.html">跨境电商多店铺防关联</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">隐私与安全矩阵</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item active" data-id="security-alert"><a href="security-alert.html">🛡️ 全天候暗网监测与隐私防御</a></li>
+          <li class="docs-menu-item" data-id="virtual-identity"><a href="virtual-identity.html">灵猫网络虚拟身份掩护</a></li>
+          <li class="docs-menu-item" data-id="ram-diskless"><a href="ram-diskless.html">全物理内存无盘架构</a></li>
+          <li class="docs-menu-item" data-id="no-logs-policy"><a href="no-logs-policy.html">严格零日志隐私规范</a></li>
+          <li class="docs-menu-item" data-id="security-whitepaper"><a href="security-whitepaper.html">企业安全白皮书</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">网络实用工具箱与实测</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="speedtest-benchmark"><a href="speedtest-benchmark.html">⚡ 灵猫全节点极速测速报告</a></li>
+          <li class="docs-menu-item" data-id="my-ip"><a href="my-ip.html">本机公网 IP 查询</a></li>
+          <li class="docs-menu-item" data-id="dns-leak"><a href="dns-leak.html">DNS 泄漏深度检测</a></li>
+          <li class="docs-menu-item" data-id="webrtc-leak"><a href="webrtc-leak.html">WebRTC 真实 IP 泄漏探测</a></li>
+          <li class="docs-menu-item" data-id="ping-test"><a href="ping-test.html">全球节点毫秒延时遥测</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">生态与合作计划</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="affiliate"><a href="affiliate.html">联盟推广营销伙伴 (40% 返佣)</a></li>
+          <li class="docs-menu-item" data-id="creators"><a href="creators.html">创作者与极客赞助</a></li>
+          <li class="docs-menu-item" data-id="discount-80"><a href="discount-80.html">全场 8 折特惠活动</a></li>
+          <li class="docs-menu-item" data-id="teams"><a href="teams.html">企业团队批量采购定制</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">客户端与帮助指南</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="downloads"><a href="downloads.html">全平台客户端下载中心</a></li>
+          <li class="docs-menu-item" data-id="setup-guides"><a href="setup-guides.html">全平台保姆级配置教程</a></li>
+          <li class="docs-menu-item" data-id="about-us"><a href="about-us.html">关于灵猫网络</a></li>
+          <li class="docs-menu-item" data-id="network-status"><a href="network-status.html">全球网络运行状态</a></li>
+          <li class="docs-menu-item" data-id="contact-us"><a href="contact-us.html">联系我们与工单支持</a></li>
+          <li class="docs-menu-item" data-id="terms"><a href="terms.html">服务条款 (Terms)</a></li>
+          <li class="docs-menu-item" data-id="privacy"><a href="privacy.html">隐私政策 (Privacy)</a></li>
+        </ul>
+      </div>
+
+    </aside>
+
+    <!-- 右侧动态文章容器 -->
+    <article class="docs-content-container" id="articleContainer">
+      <header class="article-header">
+        <div class="article-meta">
+          <span class="article-badge" id="articleCategory">核心安全与隐私防御</span>
+          <span class="article-time" id="articleReadTime">8 分钟深度技术阅读</span>
+          <span class="article-date" id="articleDate">更新于 <time datetime="2026-10-19">2026-10-19</time></span>
+        </div>
+        <h1 class="article-title" id="articleTitle">全天候暗网监测、数字资产泄露预警与虚拟身份防御技术白皮书</h1>
+        <p class="article-summary" id="articleSummary">深入解构现代网络空间黑产供应链、自动化 InfoStealer 恶意软件与暗网撞库交易生态。全面解密灵猫网络泄露预警的分布式 Tor 爬虫网络、基于 NIST SP 800-63B 的 k-Anonymity（k-匿名）零知识盲匹配检索算法，以及灵猫网络虚拟身份动态沙箱别名邮件转发阻断机制，构建从事前掩护、事中监测到事后响应的全链路防御闭环。</p>
+      </header>
+
+      <div class="article-body" id="articleBody">
+
+      <div class="docs-tool-card security-interactive-card" id="securityInteractiveSandbox">
+        <div class="tool-header">
+          <div>
+            <span class="tool-dot"></span>
+            <h4>🛡️ 灵猫零知识暗网凭据泄露自查与虚拟身份沙箱</h4>
+          </div>
+          <div class="sec-tab-switch">
+            <button class="sec-tab-btn active" id="tabBtnBreach" type="button">零知识暗网泄露排查</button>
+            <button class="sec-tab-btn" id="tabBtnAltId" type="button">灵猫网络虚拟身份生成</button>
+          </div>
+        </div>
+
+        <!-- 面板 1: 零知识暗网凭据排查模拟器 -->
+        <div class="sec-tab-panel active" id="panelBreach">
+          <p style="font-size:0.88rem; color:#64748b; margin-bottom:14px;">
+            基于 <strong>NIST SP 800-63B 推荐规范</strong> 与 <strong>k-Anonymity (k-匿名) 盲比对模型</strong>。您的原始明文凭据或邮箱<strong>绝不离开本地浏览器</strong>，仅通过 5 位散列前缀盲查询 14.8 亿条暗网凭据库。
+          </p>
+
+          <div class="sec-input-row" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+            <input type="text" id="secQueryInput" class="sec-text-input" placeholder="输入要自查的邮箱或域名 (例如 dev@example.com)" value="security-audit@company-sample.io" style="flex:1; min-width:240px; padding:10px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:0.9rem; font-family:monospace;">
+            <button class="btn-tool-action" id="btnRunBreachCheck" style="padding:10px 18px; font-size:0.9rem; background:#2563eb; color:#ffffff; border-color:#2563eb;">🔍 发起零知识盲匹配自查</button>
+          </div>
+
+          <div class="sec-presets-row" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
+            <span style="font-size:0.8rem; color:#64748b;">快速填充演示样例：</span>
+            <button class="sec-preset-chip" type="button" data-preset="safe">🟢 极客高安全账号 (无泄露)</button>
+            <button class="sec-preset-chip" type="button" data-preset="breached">🔴 模拟企业泄露邮箱 (3次重度事件)</button>
+            <button class="sec-preset-chip" type="button" data-preset="stealer">🟠 模拟遭遇 Lumma 窃密木马账号</button>
+          </div>
+
+          <!-- 哈希与 k-匿名计算实时遥测条 -->
+          <div class="sec-hash-telemetry" style="background:#0f172a; border-radius:8px; padding:12px 16px; color:#94a3b8; font-family:monospace; font-size:0.82rem; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <span>本地 SHA-256 散列值: <strong style="color:#38bdf8;" id="secLocalHash">8f4c2e17a99b0c436a51270f...</strong></span>
+              <span>k-匿名查询桶 (Prefix): <strong style="color:#34d399;" id="secHashPrefix">8F4C2</strong> (仅前5字符出网)</span>
+            </div>
+            <div style="margin-top:6px; font-size:0.75rem; color:#64748b;" id="secCryptoNote">
+              ✔ 零知识保障：灵猫威胁情报网关返回桶内 1,420 条关联哈希后缀，由浏览器在本地离线内存比对，杜绝查询反遭嗅探。
+            </div>
+          </div>
+
+          <!-- 扫描结果卡片 -->
+          <div class="sec-result-card" id="secResultCard" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:16px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span id="secResultBadge" class="badge-pill danger">🚨 高危预警：发现 3 起暗网数据泄露关联</span>
+                <span style="font-size:0.8rem; color:#64748b;">检索用时: 38 ms</span>
+              </div>
+              <span style="font-size:0.8rem; color:#64748b;">威胁情报源: 全球暗网论坛 / Tor 隐藏服务 / Stealer Logs 实时镜像</span>
+            </div>
+
+            <div class="tool-results-grid" id="secDetailsGrid">
+              <div class="tool-field">
+                <span class="field-label">泄露事件 1 (Stealer 木马日志)</span>
+                <span class="field-val highlight" style="color:#e11d48;">Lumma Stealer C2 日志镜像</span>
+                <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:4px;">泄露字段: 浏览器已存密码、会话 Cookie、2FA 恢复码</small>
+              </div>
+              <div class="tool-field">
+                <span class="field-label">泄露事件 2 (公开撞库凭证集)</span>
+                <span class="field-val highlight" style="color:#e11d48;">BreachCompilation v2 整合库</span>
+                <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:4px;">泄露字段: 明文邮箱、MD5 加盐哈希密码</small>
+              </div>
+              <div class="tool-field">
+                <span class="field-label">泄露事件 3 (跨境 B2B 泄露库)</span>
+                <span class="field-val highlight" style="color:#d97706;">Global Trade Hub 数据库脱裤</span>
+                <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:4px;">泄露字段: 注册手机号、企业账单地址、登录账号</small>
+              </div>
+            </div>
+
+            <div style="margin-top:14px; padding-top:12px; border-top:1px dashed #cbd5e1; font-size:0.85rem; color:#334155;" id="secActionGuidance">
+              <strong>💡 专家应急处置建议</strong>：检测到浏览器 Session Cookie 与密码被窃密程序抓取，请立即在当前所有已登录设备执行<strong>“强制作废全部活动会话”</strong>，并在独立密码管理器中重置主密码，并启用灵猫网络虚拟身份隔绝源头暴露。
+            </div>
+          </div>
+        </div>
+
+        <!-- 面板 2: 灵猫网络虚拟身份掩护沙箱 -->
+        <div class="sec-tab-panel" id="panelAltId" style="display:none;">
+          <p style="font-size:0.88rem; color:#64748b; margin-bottom:14px;">
+            <strong>事前源头隔离哲学</strong>：使用合规伪装身份与动态安全掩护邮箱注册各类外部平台，真实邮箱安全隐藏。一旦遭遇垃圾邮件轰炸或平台爆雷，一键注销即可彻底切断攻击面。
+          </p>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+            <button class="btn-tool-action" id="btnGenAltId" style="padding:10px 18px; font-size:0.9rem; background:#10b981; color:#ffffff; border-color:#10b981;">🎲 生成新虚拟身份与掩护邮箱</button>
+            <button class="btn-tool-action" id="btnRevokeAltId" style="padding:10px 18px; font-size:0.9rem; background:#fef2f2; color:#b91c1c; border-color:#fecaca;">🔥 模拟一键注销引爆该身份</button>
+          </div>
+
+          <div class="tool-results-grid" id="altIdGrid">
+            <div class="tool-field">
+              <span class="field-label">合规虚拟姓名 (Generated Name)</span>
+              <span class="field-val highlight" id="altName">Julian E. Vance</span>
+              <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:4px;">伪装国籍: 美国 (加利福尼亚州)</small>
+            </div>
+            <div class="tool-field">
+              <span class="field-label">安全掩护邮箱 (Masked Relay Email)</span>
+              <span class="field-val highlight" id="altEmail" style="color:#2563eb;">julian.mask.842@priv.civetcat.io</span>
+              <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:4px;">中继状态: <span class="badge-success" id="altStatus">● 动态加密转发激活中</span></small>
+            </div>
+            <div class="tool-field">
+              <span class="field-label">虚拟账单与注册画像</span>
+              <span class="field-val" id="altAddress">402 Market St, San Francisco, CA</span>
+              <small style="color:#64748b; font-size:0.75rem; display:block; margin-top:4px;">真实个人敏感数据: 100% 物理隔离不暴露</small>
+            </div>
+          </div>
+
+          <div id="altNoticeBox" style="margin-top:14px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px; font-size:0.85rem; color:#1e40af;">
+            ℹ️ <strong>动态沙箱工作原理</strong>：所有发送至 <code>julian.mask.842@priv.civetcat.io</code> 的邮件均在灵猫只读内存服务器中自动剥离原始邮件头敏感追踪元数据（如发送者 IP、反向追踪像素），并以 TLS 1.3 密文投递至您的真实工作邮箱。
+          </div>
+        </div>
+      </div>
+
+      <h3>一、全球网络空间威胁态势与暗网黑产工业化供应链</h3>
+      <p>在网络安全领域，绝大多数个人用户与企业管理者长期存在一个致命认知偏差：<strong>“我只是一名普通开发者/跨境商家，既不涉及敏感政企系统，也不做违法行为，黑客为什么要大费周章攻击我？”</strong></p>
+      <p>然而现代网络黑客攻击已经彻底脱离了上世纪 90 年代依赖人工渗透的“靶向时代”，全面演进为<strong>高度自动化、高度工业化的无差别供应链流水线</strong>：</p>
+
+      <div class="docs-callout docs-callout-info">
+        <strong>现代网络威胁的三大本质特征</strong>：
+        <ol style="margin:8px 0 0 20px;">
+          <li><strong>无差别批量收割</strong>：利用信息窃取恶意程序（InfoStealers）伪装成日常办公软件破解补丁、GitHub 开源工具分发包或 Google 搜索推广置顶虚假广告，单日即可感染全球数十万台终端设备；</li>
+          <li><strong>绕过二次认证 (2FA Bypass)</strong>：攻击者不再单纯追求密码明文，而是直接抓取浏览器内存储的已认证 <strong>Session Cookie 与 LocalStorage 令牌</strong>。黑客无需输入账号密码或短信验证码，直接将 Cookie 导入浏览器即可实现“Pass-the-Cookie”免密登录；</li>
+          <li><strong>全自动撞库生态</strong>：黑产上游洗库清洗出数以亿计的 <code>Combo List</code>（账号密码组合字典），通过分布式云服务器与住宅代理池，24 小时对全网主流平台发起高频暴力试探。</li>
+        </ol>
+      </div>
+
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>主流黑产攻击环节</th>
+              <th>常用武器 / 代表恶意程序</th>
+              <th>窃取资产与危害</th>
+              <th>传统安全防线失效原因</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>终端凭据窃密</strong></td>
+              <td>RedLine, Lumma Stealer, Vidar, Racoon</td>
+              <td>浏览器 AutoFill 密码、会话 Cookie、Web3 助记词、SSH 秘钥</td>
+              <td>静态特征免杀、无文件落地执行，传统杀毒软件漏报率极高</td>
+            </tr>
+            <tr>
+              <td><strong>暗网地下分发</strong></td>
+              <td>Breached Forums, Russian Market, 2easy</td>
+              <td>成批打包为“Stealer Log”，以每台机器 2~10 美元公开甩卖</td>
+              <td>交易使用暗网 Tor 隐藏服务与混币支付，难以被物理执法溯源</td>
+            </tr>
+            <tr>
+              <td><strong>分布式批量撞库</strong></td>
+              <td>OpenBullet, SilverBullet, Sentry</td>
+              <td>批量爆破各大云厂商控制台、社媒大号、海外支付与交易所账户</td>
+              <td>黑产租用海量公网 IP 轮询发起请求，轻松突破普通单 IP 速率限制</td>
+            </tr>
+            <tr>
+              <td><strong>社工库关联人肉</strong></td>
+              <td>Telegram 社工机器人、历史泄露聚合索引</td>
+              <td>通过单一邮箱反查真实姓名、手机号、身份证号、家庭住址与人际关系</td>
+              <td>多平台密码与邮箱共用，单一节点爆雷引发全盘身份垮塌</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>二、灵猫网络泄露预警底层架构与分布式威胁感知引擎</h3>
+      <p>针对上述工业化黑产链条，灵猫安全实验室（CivetCat Security Labs）研发并部署了全球分布式 <strong>灵猫网络泄露预警情报网络</strong>：</p>
+      <ol>
+        <li><strong>分布式 Tor / I2P 爬虫雷达群</strong>：
+          灵猫在全球 12 个节点部署了隔离爬虫集群，通过 Tor 洋葱路由与 I2P 协议 24 小时全天候无休爬取主流暗网黑客交易板块、Pastebin 类匿名文本共享站、Telegram 撞库机器人通信信道与勒索软件勒索数据发布站（DLS），实时提取最新被盗凭证指纹。
+        </li>
+        <li><strong>14.8 亿条结构化威胁情报图谱</strong>：
+          系统将抓取的情报与全球公开权威泄露库进行聚类清洗，建立包含 14.8 亿条脱敏哈希的超大型威胁索引库，能在黑客尝试批量利用被盗凭据前数小时完成比对并触发用户告警。
+        </li>
+        <li><strong>端到端瞬时通道推送</strong>：
+          一旦监测到用户的企业域名、工作邮箱或关联特征出现在暗网交易清单中，告警系统将通过专属端对端加密通道秒级推送结构化应急通知，明确列出泄露事件来源、泄露字段及应对建议。
+        </li>
+      </ol>
+
+      <h3>三、密码学基石：NIST SP 800-63B 与 k-Anonymity 零知识盲匹配模型</h3>
+      <p>在资产泄露排查领域，用户面临的最大担忧往往是：<strong>“如果我把自己的邮箱或密码输入到检测系统里查询，这难道不会变成另一场针对我的数据收集与二次泄露吗？”</strong></p>
+      <p>灵猫网络泄露预警在设计之初便确立了<strong>“零知识证明 (Zero-Knowledge Proof)”</strong>的底层数学准则，严格遵照 <strong>美国国家标准与技术研究院 NIST SP 800-63B</strong> 及 <strong>RFC 9162</strong> 标准，采用 <strong>k-Anonymity（k-匿名）盲比对模型</strong>：</p>
+
+      <div class="docs-callout docs-callout-info" style="background:#f8fafc; border:1px solid #cbd5e1; color:#0f172a;">
+        <h4 style="margin:0 0 8px; color:#0f172a;">📐 k-Anonymity 盲匹配数学原语流程：</h4>
+        <ol style="margin:0 0 0 18px; font-size:0.92rem; line-height:1.7;">
+          <li><strong>客户端单向散列</strong>：当用户在自查界面输入待测凭证字符串 (S)（如邮箱或密码），浏览器前端在本地内存中即时计算其 SHA-256 完整散列：
+            <br><code>H = SHA-256(S) = [c1, c2, c3, ..., c64]</code>
+          </li>
+          <li><strong>截取 5 位前缀桶标识 (Bucket ID)</strong>：客户端仅提取哈希值的前 5 个十六进制字符：
+            <br><code>Prefix = H[0..4] = [c1, c2, c3, c4, c5]</code>（例如 <code>8F4C2</code>）
+          </li>
+          <li><strong>盲前缀出网查询</strong>：客户端向灵猫情报网关发起查询请求 <code>GET /api/v2/threat-intel/pwned/8F4C2</code>。请注意：<strong>原始明文 (S) 与完整哈希 (H) 绝不离开用户的本地浏览器！</strong>网络链路上仅能观察到极其普通的 5 个字符。由于 5 位十六进制前缀对应着 (16^{59}) 种极度庞大的可能性，任何监听者在数学上都不可能逆向推导出用户的真实信息。</li>
+          <li><strong>服务端返回候选后缀集合</strong>：灵猫情报服务器在海量哈希索引中检索所有以 <code>Prefix</code> 开头的泄露哈希，将对应的数百至数千条“后缀部分”打包回传至用户浏览器。</li>
+          <li><strong>客户端离线内存比对</strong>：浏览器在本地沙箱内存中将自身的完整哈希与返回的候选后缀逐一比对，若命中碰撞则提示泄露，否则证明安全。</li>
+        </ol>
+      </div>
+
+      <h3>四、灵猫网络虚拟身份掩护与动态沙箱邮件转发机制</h3>
+      <p>安全业界公认的黄金法则是：<strong>“事后补救的成本永远百倍于事前的源头切断；没有被收集过的数据，才是真正不可能被泄露的数据。”</strong></p>
+      <p><strong>灵猫网络虚拟身份（替代身份与安全掩护邮箱）</strong> 提供了一套从注册源头消除隐私暴露的完整解决方案：</p>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 20px 0;">
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px;">
+          <h4 style="margin:0 0 10px; font-size:1.05rem; color:#0f172a;">🎭 全套合规虚拟在线身份</h4>
+          <p style="font-size:0.88rem; color:#475569; margin-bottom:8px;">在下载海外技术白皮书、注册论坛或测试不熟悉的新兴 SaaS 时：</p>
+          <ul style="font-size:0.85rem; color:#334155; margin:0 0 0 18px;">
+            <li>一键生成符合欧美真实拼写规律的虚拟姓名与住址；</li>
+            <li>规避跨平台大数据画像算法对您真实身份标签的收录；</li>
+            <li>彻底切断国内社工库通过单一账号向外人肉的任何线索链条。</li>
+          </ul>
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px;">
+          <h4 style="margin:0 0 10px; font-size:0.75rem; color:#0f172a; font-size:1.05rem;">🛡️ TLS 1.3 密文中继与元数据清洗</h4>
+          <p style="font-size:0.88rem; color:#475569; margin-bottom:8px;">每个服务生成独立的专属掩护别名（如 <code>svc.github.89@priv.civetcat.io</code>）：</p>
+          <ul style="font-size:0.85rem; color:#334155; margin:0 0 0 18px;">
+            <li>剥离邮件头中的 <code>X-Originating-IP</code> 与设备硬件指纹；</li>
+            <li>自动拦截营销邮件中的 1×1 追踪像素与可疑钓鱼短链接；</li>
+            <li>所有邮件均在纯 RAM 内存中实时清洗转发，不留存任何邮件内容副本。</li>
+          </ul>
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px;">
+          <h4 style="margin:0 0 10px; font-size:1.05rem; color:#0f172a;">🔥 单向黑洞瞬间销毁机制</h4>
+          <p style="font-size:0.88rem; color:#475569; margin-bottom:8px;">当某个外部第三方网站不幸爆雷脱裤、或向您狂发垃圾推销时：</p>
+          <ul style="font-size:0.85rem; color:#334155; margin:0 0 0 18px;">
+            <li>无需在对方网站艰难申诉注销账户；</li>
+            <li>在灵猫控制台点击“注销此别名”，该地址立即加入路由黑洞；</li>
+            <li>后续所有来自该站点的垃圾邮件与撞库攻击将被静默丢弃，绝不打扰您的主收件箱。</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>五、企业与个人数字资产泄露防御标准应急响应 SOP (Incident Response)</h3>
+      <p>当您收到灵猫网络泄露预警告警或确信自身账户出现异常时，请严格按照以下标准安全操作程序（SOP）进行闭环处置：</p>
+
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>响应阶段</th>
+              <th>紧急核心操作 (SOP Action)</th>
+              <th>核心技术目的</th>
+              <th>严厉禁止事项</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>阶段 1：会话阻断</strong></td>
+              <td>在账号后台强制点击<strong>“登出所有其他设备会话 (Revoke All Sessions)”</strong></td>
+              <td>彻底作废已被窃密木马或黑客窃取的 Session Cookie，切断当前活动劫持通道</td>
+              <td>切忌仅在当前浏览器点击退出，必须作废服务端所有旧令牌</td>
+            </tr>
+            <tr>
+              <td><strong>阶段 2：凭据重置</strong></td>
+              <td>使用独立开源密码管理器（如 Bitwarden / KeePassXC）生成 <strong>24 位高熵随机密码</strong></td>
+              <td>从根源终结黑客使用 Combo List 对其他关联平台的横向撞库渗透</td>
+              <td>严禁继续在其他平台复用旧密码，严禁使用含生日或规律词组的弱口令</td>
+            </tr>
+            <tr>
+              <td><strong>阶段 3：多因素加固</strong></td>
+              <td>彻底弃用 SMS 短信验证，强制绑定 <strong>基于时间戳的动态密码 (TOTP)</strong> 或 <strong>FIDO2 物理硬件密钥 (如 YubiKey)</strong></td>
+              <td>抵御 SIM 卡劫持（SIM Swap）与中间人反向代理钓鱼（Evilginx 架构）</td>
+              <td>切勿将 2FA 恢复备份代码保存在未加密的电脑桌面或备忘录中</td>
+            </tr>
+            <tr>
+              <td><strong>阶段 4：通信物理隔离</strong></td>
+              <td>在办公与敏感操作时，全链路开启<strong>灵猫全物理 IPLC 高速专线</strong></td>
+              <td>端到端物理光纤隔离公共互联网，免疫本地公共 Wi-Fi 中间人劫持、DNS 投毒与 ISP 嗅探</td>
+              <td>严禁在未加密的公用网络环境下直接登录重要资产或管理控制台</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>六、灵猫安全与合规保障体系：全物理内存无盘架构背书</h3>
+      <p>灵猫网络（Civet Cat Network）不仅为用户提供应用层的暗网监测与身份掩护，更在底层物理网络基础设施层面践行最高级别的安全标准：</p>
+      <ul>
+        <li><strong>RAM-Diskless 全物理内存无盘架构</strong>：所有专线接入服务器与中继节点全部采用定制只读微型 Linux 镜像由内存启动运行，物理硬盘处于永久断电离线状态。数据转发与邮件清洗流经内存环形缓冲区即刻粉碎覆盖，遭遇物理断电时一切临时密钥将在 0.01 秒内灰飞烟灭；</li>
+        <li><strong>严格零日志规范 (Strict No-Logs Policy)</strong>：底层操作系统从内核驱动层剥离所有 IP 记录、连接时间戳与 DNS 查询审计模块，技术上根本不存在任何用户行为日志可供调取；</li>
+        <li><strong>军工级前向安全加密</strong>：端到端启用 ChaCha20-Poly1305 / AES-256-GCM 密码学套件，辅以瞬态 ECDHE 密钥交换机制，即便未来私钥遭不可抗力泄露，历史通信记录依然绝对不可破译；</li>
+        <li><strong>离岸数据主权保障</strong>：服务器托管于全球 Tier 3+ 独立数据中心，注册于尊重隐私的离岸中立法域，为个人极客与全球企业筑起不可逾越的数字防线。</li>
+      </ul>
+
+      <div class="docs-callout docs-callout-info" style="background:#eff6ff; border-color:#bfdbfe; color:#1e40af; margin-top:32px;">
+        <h4 style="margin:0 0 8px; color:#1e40af;">🛡️ 立即开启灵猫全能安全与隐私防御方案</h4>
+        <p style="margin-bottom:12px; font-size:0.92rem; color:#3b82f6;">一键订阅尊享全物理 IPLC 专线骨干、全天候灵猫网络暗网泄露预警、灵猫网络虚拟身份沙箱与 100% 纯内存零日志保护。结账输入限时专属优惠码即享 8 折特惠：</p>
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <span style="background:#ffffff; border:1px dashed #3b82f6; padding:6px 14px; border-radius:6px; font-family:monospace; font-weight:700; color:#1d4ed8; font-size:1rem;">优惠代码: LM80</span>
+          <a href="../pricing.html" class="docs-btn page-transition-link" style="margin:0; background:#2563eb; color:#ffffff;">获取全能安全方案 &rarr;</a>
+        </div>
+      </div>
+    
+      </div>
+    </article>
+
+  </main>
+
+  <script src="../js/docs.js?v=20261019"></script>
+</body>
+</html>

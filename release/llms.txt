@@ -1,0 +1,62 @@
+# 灵猫 Civet Cat
+
+> 灵猫 (Civet Cat) 提供全 IPLC 物理专线的全球高速网络服务，本站包含套餐价格、技术原理、使用教程与网络检测工具。
+
+## 核心页面
+- [首页](https://lingmaonetwork.com/)：产品总览与核心卖点
+- [订阅套餐价格](https://lingmaonetwork.com/pricing.html)：全部套餐、价格与流量方案
+
+## 专线实测评测
+- [灵猫专线全节点极速实测与性能基准评测报告（港/台/新/美/日晚高峰实测）](https://lingmaonetwork.com/docs/speedtest-benchmark.html)：基于中国电信、中国联通与中国移动三网千兆宽带网络环境，在 20:00-23:00 晚高峰黄金拥堵时段对灵猫专线核心五大节点（香港、台湾、日本、新加坡、美国）进行的吞吐带宽、延迟抖动、丢包率与 8K/AI 实际应用全方位深度实测报告。
+
+## 专线深度技术
+- [什么是全物理 IPLC 专线？与普通公网节点有何本质区别？](https://lingmaonetwork.com/docs/what-is-iplc.html)：深入剖析国际私有租用线路（IPLC）的底层物理架构，探讨为什么物理专线能够彻底免疫公网国际出口拥堵、敏感期断流与丢包。
+- [灵猫全球全 IPLC 专线骨干架构与低延迟原理解析](https://lingmaonetwork.com/docs/iplc-network.html)：解构灵猫全网 45+ 核心 POP 节点的多活 BGP 路由矩阵与 1000 Mbps 独享带宽调度机制。
+- [核心协议与全链路军工级加密白皮书](https://lingmaonetwork.com/docs/protocols-crypto.html)：详述 ChaCha20-Poly1305 与 AES-256-GCM 双重加密算法，以及完善前向安全（PFS）和防 DNS 嗅探机制。
+- [灵猫全球 45+ 骨干 POP 节点网络拓扑与硬件规格](https://lingmaonetwork.com/docs/global-nodes.html)：公开灵猫网络亚太、北美与欧洲核心专线机房节点分布、上联带宽规格与机架硬件架构。
+
+## 解锁技术指南
+- [原生住宅 IP 与机房广播 IP 的深度风控评测报告](https://lingmaonetwork.com/docs/native-ip.html)：深度解析什么是原生 IP、双 ISP 住宅广播属性，以及为什么普通机房 IP 无法通过 OpenAI 与 Netflix 的严苛反作弊检测。
+- [适用场景：AI 生产力大模型极速直连解决方案](https://lingmaonetwork.com/docs/ai-productivity.html)：针对 ChatGPT Plus、Claude 3.5 Sonnet 与 Midjourney 的防封号、免报错、低延迟长连接保姆级使用方案。
+
+## 企业行业方案
+- [解决方案：跨国远程办公与高管团队协同加速](https://lingmaonetwork.com/docs/solution-remote-work.html)：为跨国跨地域团队提供 Zoom/Teams 4K 零卡顿视频会议、内部代码仓库与云桌面安全互联方案。
+- [解决方案：AI 大模型研发与企业级 API 高并发直连](https://lingmaonetwork.com/docs/solution-ai-dev.html)：针对企业与个人开发者的高并发 OpenAI / Anthropic API 调用需求，提供高可用专线通道。
+- [解决方案：4K/8K 原生流媒体全区极清畅享](https://lingmaonetwork.com/docs/solution-streaming.html)：解锁 Netflix 各区自制剧与非自制剧、Disney+、YouTube Premium、HBO Max 与 TikTok Global。
+- [解决方案：跨境电商多店铺运营与防关联网络隔离](https://lingmaonetwork.com/docs/solution-ecommerce.html)：为亚马逊、TikTok Shop、Shopee 卖家提供纯净、固定、原生的独立出网环境，杜绝跨店铺关联封号。
+
+## 核心安全与隐私防御
+- [灵猫网络虚拟身份掩护系统技术白皮书](https://lingmaonetwork.com/docs/virtual-identity.html)：解密灵猫网络虚拟身份动态虚拟身份画像与掩护邮箱中继技术，深入剖析敏感元数据清洗、HMAC-SHA256 签名防伪与单向黑洞注销机制，从注册源头切断网络钓鱼、垃圾推销与跨平台社工库人肉关联。
+- [全天候暗网监测、数字资产泄露预警与虚拟身份防御技术白皮书](https://lingmaonetwork.com/docs/security-alert.html)：深入解构现代网络空间黑产供应链、自动化 InfoStealer 恶意软件与暗网撞库交易生态。全面解密灵猫网络泄露预警的分布式 Tor 爬虫网络、基于 NIST SP 800-63B 的 k-Anonymity（k-匿名）零知识盲匹配检索算法，以及灵猫网络虚拟身份动态沙箱别名邮件转发阻断机制，构建从事前掩护、事中监测到事后响应的全链路防御闭环。
+
+## 隐私安全防护
+- [全链路纯 RAM 内存无盘运行与数据自毁安全架构](https://lingmaonetwork.com/docs/ram-diskless.html)：服务器节点操作系统完全在 RAM 内存只读镜像中运行，断电永久自毁，物理级确保零日志留存。
+
+## 资源与关于
+- [关于灵猫网络 (Civet Cat Network) - 品牌历程与核心愿景](https://lingmaonetwork.com/docs/about-us.html)：了解灵猫网络的创立初心、全球光纤骨干建设历程以及跨国分布式网络工程团队。
+- [信任中心与企业网络安全白皮书 (Security Whitepaper)](https://lingmaonetwork.com/docs/security-whitepaper.html)：详细阐述灵猫网络的物理隔离架构、数据链路加密标准、运维审计及应急响应机制。
+- [严格零日志隐私规范 (Strict No-Logs Policy) 报告](https://lingmaonetwork.com/docs/no-logs-policy.html)：公开承诺不记录用户真实出网 IP、连接时间戳、访问目标与 DNS 查询记录的法律与技术保障。
+- [全球专线骨干网络实时监控状态与历史 SLA](https://lingmaonetwork.com/docs/network-status.html)：实时公布香港、东京、新加坡、美西、欧洲主要骨干路由节点的在线率、负载与网络健康指标。
+- [联系我们与官方 7×24 在线工单服务通道](https://lingmaonetwork.com/docs/contact-us.html)：商务合作、技术支持、漏洞报告与客服工单的官方联络指引。
+
+## 合作计划
+- [灵猫网络联盟推广营销伙伴计划 (Affiliate Program)](https://lingmaonetwork.com/docs/affiliate.html)：最高享受 40% 终身循环返佣，提供精准点击追踪、透明报表与灵活提现方式。
+- [创作者与技术极客社区赞助计划](https://lingmaonetwork.com/docs/creators.html)：针对 YouTube 科技 UP 主、独立博主、开源社区开发者的专属节点赞助与流量支持。
+- [企业团队批量定制与私有专线采购方案](https://lingmaonetwork.com/docs/teams.html)：面向出海跨境电商、跨国研发团队的多席位统一管理后台、独立网段与合规发票服务。
+
+## 特惠活动
+- [灵猫全场 8 折限时特惠活动与优惠码使用指南](https://lingmaonetwork.com/docs/discount-80.html)：灵猫网络官方全场节点套餐 8 折专属优惠，输入代码 LM80 即可自动立减 20%，尊享全物理 IPLC 高速专线。
+
+## 技术支持与配置
+- [灵猫全平台客户端官方下载中心与多端支持矩阵](https://lingmaonetwork.com/docs/downloads.html)：全面支持 Windows、macOS、iOS、Android、Linux 客户端及家用软路由固件一键下载与快速安装。
+- [灵猫全平台保姆级配置图文教程与订阅导入指南](https://lingmaonetwork.com/docs/setup-guides.html)：针对小白用户的 3 步极速上手指南：从复制专属订阅链接到客户端一键配置完成。
+
+## 网络实用工具箱
+- [实用工具：本机公网 IP 与地理位置实时查询](https://lingmaonetwork.com/docs/my-ip.html)：实时探测您当前网络环境的出网公网 IPv4/IPv6、运营商 ASN 以及地理位置定位。
+- [实用工具：DNS 泄漏深度检测与防投毒测试](https://lingmaonetwork.com/docs/dns-leak.html)：检测您的网络环境是否存在本地运营商 DNS 劫持、嗅探及未走加密通道的潜在隐私隐患。
+- [实用工具：WebRTC 本地真实 IP 泄漏实时探测](https://lingmaonetwork.com/docs/webrtc-leak.html)：利用浏览器原生 RTCPeerConnection 接口检测您的本地局域网和公网真实 IP 是否被无感穿透。
+- [实用工具：全球核心专线节点毫秒延时遥测](https://lingmaonetwork.com/docs/ping-test.html)：实时监测灵猫全物理 IPLC 专线至香港、东京、新加坡、硅谷、伦敦的核心路由链路时延指标。
+
+## 法律与合规
+- [灵猫网络服务条款 (Terms of Service)](https://lingmaonetwork.com/docs/terms.html)：灵猫网络服务使用范围、双方权利义务及合规使用规范。
+- [灵猫网络隐私保护政策 (Privacy Policy)](https://lingmaonetwork.com/docs/privacy.html)：我们如何处理您的个人信息，以及我们对零日志（No-Logs）的技术承诺。

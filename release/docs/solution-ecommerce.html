@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>解决方案：跨境电商多店铺运营与防关联网络隔离 - 灵猫网络文档中心</title>
+  <meta name="description" content="为亚马逊、TikTok Shop、Shopee 卖家提供纯净、固定、原生的独立出网环境，杜绝跨店铺关联封号。">
+  <link rel="stylesheet" href="../css/style.css?v=20261019">
+  <link rel="icon" type="image/png" href="../assets/images/logo.png">
+  <style>
+    /* Docs Hub 专用专业级排版样式 */
+    .docs-body {
+      background: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .docs-header-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #eaecf0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .docs-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #0f172a;
+    }
+    .docs-brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+    .docs-brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+    .docs-brand-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid #bfdbfe;
+    }
+    .docs-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .docs-nav-link {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #475569;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .docs-nav-link:hover {
+      color: #0f172a;
+    }
+    .docs-btn-login {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .docs-btn-login:hover {
+      background: #1e293b;
+    }
+    .docs-main-layout {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      padding: 28px 24px 60px;
+      gap: 36px;
+      box-sizing: border-box;
+    }
+    /* 侧边栏导航 */
+    .docs-sidebar {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px 18px;
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+    .docs-sidebar-group {
+      margin-bottom: 24px;
+    }
+    .docs-sidebar-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #94a3b8;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+      padding-left: 10px;
+    }
+    .docs-menu-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .docs-menu-item a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: #475569;
+      text-decoration: none;
+      font-weight: 500;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+    }
+    .docs-menu-item a:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    .docs-menu-item.active a {
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 700;
+      border-left: 3px solid #2563eb;
+    }
+    /* 文章主体区 */
+    .docs-content-container {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 44px 50px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      min-height: 600px;
+    }
+    .article-header {
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 24px;
+      margin-bottom: 30px;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .article-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid #dbeafe;
+    }
+    .article-time, .article-date {
+      font-size: 0.82rem;
+      color: #64748b;
+    }
+    .article-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      margin: 0 0 16px;
+    }
+    .article-summary {
+      font-size: 1.05rem;
+      color: #475569;
+      line-height: 1.65;
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 0;
+    }
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #334155;
+    }
+    .article-body h3 {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 36px 0 14px;
+      letter-spacing: -0.01em;
+    }
+    .article-body p {
+      margin-bottom: 18px;
+    }
+    .article-body strong {
+      color: #0f172a;
+    }
+    .article-body ul, .article-body ol {
+      margin: 0 0 20px 24px;
+      padding: 0;
+    }
+    .article-body li {
+      margin-bottom: 8px;
+    }
+    .article-body code {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.88rem;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+    .docs-callout {
+      padding: 18px 20px;
+      border-radius: 10px;
+      margin: 24px 0;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+    .docs-callout-info {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+    .docs-table-wrap {
+      overflow-x: auto;
+      margin: 24px 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+    }
+    .docs-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    .docs-table th, .docs-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .docs-table th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .docs-table tr:last-child td {
+      border-bottom: none;
+    }
+    .badge-success {
+      color: #16a34a;
+      font-weight: 700;
+    }
+    .docs-btn {
+      display: inline-block;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 8px;
+    }
+    .docs-link {
+      color: #2563eb;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    /* 在线工具卡片专有样式 */
+    .docs-tool-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+    }
+    .tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .tool-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      margin-right: 8px;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+    .tool-header h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #0f172a;
+    }
+    .btn-tool-action {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-tool-action:hover {
+      background: #dbeafe;
+    }
+    .tool-results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .tool-field {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 14px;
+      border-radius: 8px;
+    }
+    .field-label {
+      display: block;
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .field-val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f172a;
+      font-family: Consolas, Monaco, monospace;
+    }
+    .field-val.highlight {
+      color: #2563eb;
+    }
+    .docs-ping-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .ping-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    }
+    .ping-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+    .ping-val {
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .ping-green {
+      background: #ecfdf5;
+      color: #059669;
+    }
+    .ping-card p {
+      font-size: 0.78rem;
+      color: #64748b;
+      margin: 0;
+    }
+    .docs-status-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .status-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .status-box h4 {
+      margin: 0 0 4px;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+    .status-box p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .status-indicator.online {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+    .tool-status-banner.safe {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 16px 20px;
+      border-radius: 10px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .status-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+    .tool-status-banner h5 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      color: #166534;
+    }
+    .tool-status-banner p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #15803d;
+    }
+
+    /* 测速报告专用高科技交互样式 */
+    .speedtest-interactive-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+    }
+    .speedtest-interactive-card .tool-header h4 {
+      color: #ffffff;
+    }
+    .speedtest-interactive-card .tool-field {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .speedtest-interactive-card .field-label {
+      color: #94a3b8;
+    }
+    .speedtest-interactive-card .field-val {
+      color: #38bdf8;
+    }
+    .speed-gauge-wrap {
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 8px;
+    }
+    .speed-num-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .speed-big-val {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #38bdf8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .speed-unit {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .speed-progress-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .speed-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8 0%, #10b981 100%);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+    .speed-sub-metrics {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      flex-wrap: wrap;
+    }
+    .speed-sub-metrics strong {
+      color: #f1f5f9;
+    }
+    /* 身份与安全白皮书交互沙箱样式 */
+    .sec-tab-switch {
+      display: flex;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .sec-tab-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sec-tab-btn.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+    .sec-preset-chip {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sec-preset-chip:hover {
+      background: #e2e8f0;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .badge-pill.danger {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    .badge-pill.safe {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .badge-pill.warning {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+    @media (max-width: 900px) {
+      .docs-header-bar {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .docs-brand-badge {
+        display: none;
+      }
+      .docs-brand-title {
+        font-size: 1.02rem;
+      }
+      .docs-nav-actions {
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .docs-nav-link {
+        font-size: 0.8rem;
+      }
+      .docs-btn-login {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+      }
+      .docs-main-layout {
+        grid-template-columns: 1fr;
+        padding: 16px 12px 40px;
+        gap: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      .docs-content-container {
+        padding: 24px 16px;
+        order: 1; /* 移动端文章优先展示在顶部 */
+      }
+      .docs-sidebar {
+        position: static;
+        max-height: none;
+        order: 2; /* 目录列表移至文章下方供扩展阅读 */
+      }
+      .article-title {
+        font-size: 1.45rem;
+      }
+      .article-summary {
+        font-size: 0.92rem;
+      }
+      .article-meta {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tool-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .sec-tab-switch {
+        width: 100%;
+      }
+      .sec-tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 6px 8px;
+        font-size: 0.78rem;
+      }
+    }
+    /* 上线检查修复：手机上宽表格可左右滑动，不再把文字挤成一字一行 */
+    @media (max-width: 768px) {
+      .article-body table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .article-body th,
+      .article-body td {
+        min-width: 110px;
+      }
+    }
+  </style>
+  <link rel="canonical" href="https://lingmaonetwork.com/docs/solution-ecommerce.html">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "解决方案：跨境电商多店铺运营与防关联网络隔离", "description": "为亚马逊、TikTok Shop、Shopee 卖家提供纯净、固定、原生的独立出网环境，杜绝跨店铺关联封号。", "url": "https://lingmaonetwork.com/docs/solution-ecommerce.html", "mainEntityOfPage": "https://lingmaonetwork.com/docs/solution-ecommerce.html", "inLanguage": "zh-CN", "articleSection": "企业行业方案", "datePublished": "2026-10-10", "dateModified": "2026-10-10", "author": {"@type": "Organization", "name": "灵猫 Civet Cat", "url": "https://lingmaonetwork.com/"}, "publisher": {"@id": "https://lingmaonetwork.com/#org", "@type": "Organization", "name": "灵猫 Civet Cat", "logo": {"@type": "ImageObject", "url": "https://lingmaonetwork.com/assets/images/logo.png"}}, "isPartOf": {"@id": "https://lingmaonetwork.com/#website"}}</script>
+</head>
+<body class="docs-body" data-doc="solution-ecommerce">
+
+  <!-- 顶部精简科技导航栏 -->
+  <header class="docs-header-bar">
+    <a href="../index.html" class="docs-brand page-transition-link">
+      <img src="../assets/images/logo.png" alt="Civet Cat Logo">
+      <span class="docs-brand-title">Civet Cat 灵猫文档中心</span>
+      <span class="docs-brand-badge">企业知识库</span>
+    </a>
+    <div class="docs-nav-actions">
+      <a href="../index.html" class="docs-nav-link page-transition-link">返回官网首页</a>
+      <a href="../pricing.html" class="docs-nav-link page-transition-link">定价套餐</a>
+      <a href="../index.html#faq" class="docs-nav-link page-transition-link">常见问题</a>
+      <a href="https://vip01.civetnet.com" target="_blank" rel="noopener noreferrer" class="docs-btn-login">控制台登录</a>
+    </div>
+  </header>
+
+  <!-- 主体工作区：左侧目录树 + 右侧文章渲染器 -->
+  <main class="docs-main-layout">
+    
+    <!-- 侧边栏菜单 -->
+    <aside class="docs-sidebar" aria-label="文档导航目录">
+      
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">专线深度技术</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="what-is-iplc"><a href="what-is-iplc.html">什么是全物理 IPLC？</a></li>
+          <li class="docs-menu-item" data-id="iplc-network"><a href="iplc-network.html">灵猫全球 IPLC 骨干网络</a></li>
+          <li class="docs-menu-item" data-id="protocols-crypto"><a href="protocols-crypto.html">核心协议与军工级加密</a></li>
+          <li class="docs-menu-item" data-id="global-nodes"><a href="global-nodes.html">全球 45+ 骨干 POP 节点</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">原生解锁与 AI</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="native-ip"><a href="native-ip.html">原生 IP 与广播 IP 区别</a></li>
+          <li class="docs-menu-item" data-id="ai-productivity"><a href="ai-productivity.html">AI 大模型 (ChatGPT/Claude)</a></li>
+          <li class="docs-menu-item" data-id="solution-streaming"><a href="solution-streaming.html">4K/8K 原生流媒体全区解锁</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">行业解决方案</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="solution-remote-work"><a href="solution-remote-work.html">跨国远程办公协同</a></li>
+          <li class="docs-menu-item" data-id="solution-ai-dev"><a href="solution-ai-dev.html">企业级 AI API 高并发</a></li>
+          <li class="docs-menu-item active" data-id="solution-ecommerce"><a href="solution-ecommerce.html">跨境电商多店铺防关联</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">隐私与安全矩阵</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="security-alert"><a href="security-alert.html">🛡️ 全天候暗网监测与隐私防御</a></li>
+          <li class="docs-menu-item" data-id="virtual-identity"><a href="virtual-identity.html">灵猫网络虚拟身份掩护</a></li>
+          <li class="docs-menu-item" data-id="ram-diskless"><a href="ram-diskless.html">全物理内存无盘架构</a></li>
+          <li class="docs-menu-item" data-id="no-logs-policy"><a href="no-logs-policy.html">严格零日志隐私规范</a></li>
+          <li class="docs-menu-item" data-id="security-whitepaper"><a href="security-whitepaper.html">企业安全白皮书</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">网络实用工具箱与实测</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="speedtest-benchmark"><a href="speedtest-benchmark.html">⚡ 灵猫全节点极速测速报告</a></li>
+          <li class="docs-menu-item" data-id="my-ip"><a href="my-ip.html">本机公网 IP 查询</a></li>
+          <li class="docs-menu-item" data-id="dns-leak"><a href="dns-leak.html">DNS 泄漏深度检测</a></li>
+          <li class="docs-menu-item" data-id="webrtc-leak"><a href="webrtc-leak.html">WebRTC 真实 IP 泄漏探测</a></li>
+          <li class="docs-menu-item" data-id="ping-test"><a href="ping-test.html">全球节点毫秒延时遥测</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">生态与合作计划</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="affiliate"><a href="affiliate.html">联盟推广营销伙伴 (40% 返佣)</a></li>
+          <li class="docs-menu-item" data-id="creators"><a href="creators.html">创作者与极客赞助</a></li>
+          <li class="docs-menu-item" data-id="discount-80"><a href="discount-80.html">全场 8 折特惠活动</a></li>
+          <li class="docs-menu-item" data-id="teams"><a href="teams.html">企业团队批量采购定制</a></li>
+        </ul>
+      </div>
+
+      <div class="docs-sidebar-group">
+        <div class="docs-sidebar-title">客户端与帮助指南</div>
+        <ul class="docs-menu-list">
+          <li class="docs-menu-item" data-id="downloads"><a href="downloads.html">全平台客户端下载中心</a></li>
+          <li class="docs-menu-item" data-id="setup-guides"><a href="setup-guides.html">全平台保姆级配置教程</a></li>
+          <li class="docs-menu-item" data-id="about-us"><a href="about-us.html">关于灵猫网络</a></li>
+          <li class="docs-menu-item" data-id="network-status"><a href="network-status.html">全球网络运行状态</a></li>
+          <li class="docs-menu-item" data-id="contact-us"><a href="contact-us.html">联系我们与工单支持</a></li>
+          <li class="docs-menu-item" data-id="terms"><a href="terms.html">服务条款 (Terms)</a></li>
+          <li class="docs-menu-item" data-id="privacy"><a href="privacy.html">隐私政策 (Privacy)</a></li>
+        </ul>
+      </div>
+
+    </aside>
+
+    <!-- 右侧动态文章容器 -->
+    <article class="docs-content-container" id="articleContainer">
+      <header class="article-header">
+        <div class="article-meta">
+          <span class="article-badge" id="articleCategory">企业行业方案</span>
+          <span class="article-time" id="articleReadTime">6 分钟阅读</span>
+          <span class="article-date" id="articleDate">更新于 <time datetime="2026-10-10">2026-10-10</time></span>
+        </div>
+        <h1 class="article-title" id="articleTitle">解决方案：跨境电商多店铺运营与防关联网络隔离</h1>
+        <p class="article-summary" id="articleSummary">为亚马逊、TikTok Shop、Shopee 卖家提供纯净、固定、原生的独立出网环境，杜绝跨店铺关联封号。</p>
+      </header>
+
+      <div class="article-body" id="articleBody">
+
+      <h3>一、跨境电商网络封号风险</h3>
+      <p>跨境电商平台（如 Amazon、eBay、TikTok Shop）采用极度严格的反作弊系统。如果多套店铺账号在同一个公共代理 IP 下登录，或者代理 IP 频繁在不同机房之间漂移，系统会立刻判定为关联账号并实施封店惩罚。</p>
+      <h3>二、灵猫跨境电商网络保障体系</h3>
+      <ul>
+        <li><strong>独享纯净原生 IP</strong>：IP 仅由单个团队独立使用，无任何历史黑名单记录；</li>
+        <li><strong>环境指纹高度纯净</strong>：配合防关联浏览器，底层网络协议栈、时区、DNS、WebRTC 完全契合当地原生标准；</li>
+        <li><strong>长效稳定在线</strong>：全天候 99.99% 在线率，店铺后台与即时客服永不离线。</li>
+      </ul>
+    
+      </div>
+    </article>
+
+  </main>
+
+  <script src="../js/docs.js?v=20261019"></script>
+</body>
+</html>

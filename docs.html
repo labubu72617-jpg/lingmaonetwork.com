@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>灵猫网络技术文档与知识中心 - Civet Cat Documentation Hub</title>
+  <link rel="canonical" href="https://lingmaonetwork.com/docs/what-is-iplc.html">
+  <script>
+    // 旧版文档地址 docs.html?article=xxx 已改为独立页面 docs/xxx.html，这里把旧链接转到新地址
+    (function () {
+      var q = new URLSearchParams(location.search);
+      var key = q.get('article') || q.get('tool') || q.get('doc') || location.hash.replace('#', '') || 'what-is-iplc';
+      var aliases = { 'education-discount': 'discount-80', 'darkweb-privacy-defense': 'security-alert', 'alternative-id': 'virtual-identity' };
+      key = aliases[key] || key;
+      if (!/^[a-z0-9-]+$/.test(key)) key = 'what-is-iplc';
+      location.replace('docs/' + key + '.html');
+    })();
+  </script>
+  <noscript><meta http-equiv="refresh" content="0; url=docs/what-is-iplc.html"></noscript>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; text-align: center; padding: 60px 20px; color: #0f172a;">
+  <p>正在打开灵猫文档中心… 如未自动跳转，请 <a href="docs/what-is-iplc.html">点击这里</a>。</p>
+</body>
+</html>
