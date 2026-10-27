@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "release")
 
 PAGES = ["index.html", "pricing.html", "docs.html", "speedtest.html", "404.html"]
-FILES = ["robots.txt", "sitemap.xml", "llms.txt", "css/style.css", "js/main.js", "js/docs.js"]
+FILES = ["robots.txt", "BingSiteAuth.xml", "sitemap.xml", "llms.txt", "css/style.css", "js/main.js", "js/docs.js"]
 
 
 def read(rel):
